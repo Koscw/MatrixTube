@@ -1,0 +1,37 @@
+{% load humanize %}
+
+{% load staticfiles %}
+
+{% for comment in video.get_comments %}     
+   <li class="my-3" >
+     {% if comment.user.avatar %}
+         <a href="{% url 'profile' comment.user.username %}">
+            <img  src="{{comment.user.avatar.url}}" alt="profile_pic" class="comment-profile rounded-circle float-left">
+         </a>
+       {% else %}
+          
+         <a  href="{% url 'profile' comment.user.username %}">
+            <img  src="{% static 'img/user.png' %}" class="comment-profile rounded-circle float-left" alt="profile_pic" />
+         </a>
+     {% endif %}
+    
+     <div class="ml-4">
+        <div class="ml-4">
+          <a style="background: Black;  color: red; padding: 2px;" href="{% url 'profile' comment.user.username %}">
+            {{comment.user.username}}
+          </a>
+          
+          <small class="ml-1" style="color:white">{{comment.date|naturaltime }}</small>
+          
+          {% if comment.user.username == user.username %}
+            <i style="background: Black;  color: White; padding: 2px;" data-id="{{ comment.pk }}" id="remove" class="float-right  fa fa-close" ></i>
+          {% endif %}
+          
+        </div>
+        <div  class="ml-4" style="background: White;  color: green; padding: 2px;"> {{ comment.post }}  </div>
+     </div>
+   </li>
+   {% empty %}
+   <li class="empty" style="background: Black;  color: green; padding: 2px;"> Be the first one to comment </li>
+{% endfor %}
+
